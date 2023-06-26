@@ -95,7 +95,6 @@ class AppUsageEventCollector(
                 preferences[lastQueriedTimestampKey] = currTimestamp
             }
             prevTimestamp = currTimestamp
-            Log.d(javaClass.name, "DONE")
         } catch (throwable: Throwable) {
             Log.d(javaClass.name, throwable.toString())
         }
@@ -120,7 +119,6 @@ class AppUsageEventCollector(
         context.unregisterReceiver(receiver)
         alarmManager.cancel(intent)
     }
-
 }
 
 fun BroadcastReceiver.goAsync(

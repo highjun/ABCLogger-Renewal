@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "834886098208",
+    "project_id": "expanded-league-390113",
+    "storage_bucket": "expanded-league-390113.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:834886098208:android:9a62fc06f563f4d4cc8b45",
+        "android_client_info": {
+          "package_name": "com.iclab.abclogger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "834886098208-kapsnn6ukdhg4rme2s6e9kea84q6tqaq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.iclab.abclogger",
+            "certificate_hash": "730f4808ce71988e9abba8be56b1909c77462616"
+          }
+        },
+        {
+          "client_id": "834886098208-mnta7gn29ttd24nrimusr4ufe37k9hu2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdz_J807aR_JIKjRXQvBt9y3d7YGvkMbk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "834886098208-mnta7gn29ttd24nrimusr4ufe37k9hu2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

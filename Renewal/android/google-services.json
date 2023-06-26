@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "438290174407",
+    "firebase_url": "https://abc-logger-4e658.firebaseio.com",
+    "project_id": "abc-logger-4e658",
+    "storage_bucket": "abc-logger-4e658.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:438290174407:android:449ecbe1c5cc7aed03c9e2",
+        "android_client_info": {
+          "package_name": "kaist.iclab.abclogger"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "438290174407-370q9iuk6qj22e3gu0c8p2vpg252bh9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kaist.iclab.abclogger",
+            "certificate_hash": "52a683125eceda0f09c5c473d21716f3774c63c1"
+          }
+        },
+        {
+          "client_id": "438290174407-24i7ekafng6a1ridnu3ranlj7ej8tr3v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "kaist.iclab.abclogger",
+            "certificate_hash": "b97a283b749c6f7e923da38b6842d932b93e703b"
+          }
+        },
+        {
+          "client_id": "438290174407-2im7glfa80tk0po662nb2uvirrhms13p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDESxHoexxafeBVdVEkJgdqv4VIevZFc38"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "438290174407-2im7glfa80tk0po662nb2uvirrhms13p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

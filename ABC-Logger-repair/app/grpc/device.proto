@@ -1,0 +1,17 @@
+syntax = "proto3";
+
+package kaist.iclab.abclogger;
+
+import 'user.proto';
+
+option java_package = "kaist.iclab.abclogger.grpc";
+option java_outer_classname = "DeviceProto";
+
+message Device {
+  User user = 1;
+  string uuid = 2; //PK
+  string manufacturer = 3; // Ex> Samsung
+  string model = 4; // Ex> SM-G991N
+  string name = 5; // Ex> Galaxy S21 5G
+  int32 os = 6; // Ex> 11 (Android Version)
+}

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <attr name="headerText" format="string"/>
+    <attr name="descriptionText" format="string"/>
+
+    <declare-styleable name="DataConfigView">
+        <attr name="isChecked" format="boolean"/>
+        <attr name="headerText"/>
+        <attr name="descriptionText"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="SurveyQuestionItemView">
+        <attr name="headerText"/>
+        <attr name="shouldAnswer" format="boolean"/>
+        <attr name="showEtc" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="AutoRadioGroup">
+        <attr name="radioButtonTextSize" format="dimension"/>
+        <attr name="radioButtonTextColor" format="color"/>
+        <attr name="radioButtonEnabled" format="boolean"/>
+    </declare-styleable>
+
+    <declare-styleable name="ResponseView">
+        <attr name="android:textSize" format="dimension"/>
+    </declare-styleable>
+
+</resources>

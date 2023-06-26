@@ -1,0 +1,12 @@
+syntax = "proto3";
+
+package kaist.iclab.abclogger;
+
+option java_package = "kaist.iclab.abclogger.grpc";
+option java_outer_classname = "UserProto";
+
+message User {
+  string uid = 1; // PK, Hashed Using email
+  string email = 2; // Email, Ex> tester@gmail.com
+  string group = 3; // Group Name of Experiment, Ex> Smart Speaker
+}

@@ -1,0 +1,114 @@
+syntax = "proto3";
+
+package kaist.iclab.abclogger;
+
+import "common.proto";
+import "aggregate.proto";
+import "datum.proto";
+import "heart_beat.proto";
+import "hqs.proto";
+import "subject.proto";
+
+option java_package = "kaist.iclab.abclogger.grpc.service";
+option java_outer_classname = "ServiceProtos";
+
+
+message Query {
+    message Read {
+        repeated DatumType datum_type = 1;
+        repeated string group_name = 2;
+        repeated string email = 3;
+        repeated string instance_id = 4;
+        repeated string source = 5;
+        repeated string device_manufacturer = 6;
+        repeated string device_model = 7;
+        repeated string device_version = 8;
+        repeated string device_os = 9;
+        repeated string app_id = 10;
+        repeated string app_version = 11;
+        int64 from_timestamp = 12;
+        int64 to_timestamp = 13;
+        int32 limit = 14;
+        bool is_ascending = 15;
+    }
+    
+    message Aggregate {
+        repeated DatumType datum_type = 1;
+        repeated string group_name = 2;
+        repeated string email = 3;
+        repeated string instance_id = 4;
+        repeated string source = 5;
+        repeated string device_manufacturer = 6;
+        repeated string device_model = 7;
+        repeated string device_version = 8;
+        repeated string device_os = 9;
+        repeated string app_id = 10;
+        repeated string app_version = 11;
+        int64 from_timestamp = 12;
+        int64 to_timestamp = 13;
+    }
+    
+    message Compare {
+        Subject subject = 1;
+        repeated string ref_group_name = 2;
+        repeated string ref_email = 3;
+        repeated string ref_instance_id = 4;
+        repeated string ref_source = 5;
+        repeated string ref_device_manufacturer = 6;
+        repeated string ref_device_model = 7;
+        repeated string ref_device_version = 8;
+        repeated string ref_device_os = 9;
+        repeated string ref_app_id = 10;
+        repeated string ref_app_version = 11;
+        int64 from_timestamp = 12;
+        int64 to_timestamp = 13;
+        int64 ref_from_timestamp = 14;
+        int64 ref_to_timestamp = 15;
+    }
+}
+
+message Bulk {
+    message Data {
+        repeated Datum datum = 1;
+    }
+
+    message Subjects {
+        repeated Subject subject = 1;
+    }
+
+    message HeartBeats {
+        repeated HeartBeat heart_beat = 1;
+    }
+}
+
+service DataOperations {
+    rpc CreateDatum(Datum) returns (Empty) { }
+    rpc CreateData(Bulk.Data) returns (Empty) { }
+    rpc CreateDataAsStream(stream Datum) returns (Empty) { }
+    
+    rpc ReadData(Query.Read) returns (Bulk.Data) { }
+    rpc ReadDataAsStream(Query.Read) returns (stream Datum) { }
+}
+
+service HeartBeatsOperation {
+    rpc CreateHeartBeat(HeartBeat) returns (Empty) { }
+
+    rpc ReadHeartBeats(Query.Read) returns (Bulk.HeartBeats) { }
+    rpc ReadHeartBeatsAsStream(Query.Read) returns (stream HeartBeat) { }
+}
+
+service SubjectsOperations {
+    rpc ReadSubjects(Query.Read) returns (Bulk.Subjects) { }
+    rpc ReadSubjectsAsStream(Query.Read) returns (stream Subject) { }
+}
+
+service AggregateOperations {
+    rpc CountSubjects(Query.Aggregate) returns (Aggregation) { }
+    rpc CountData(Query.Aggregate) returns (Aggregation) { }
+}
+
+service HqsOperations {
+    rpc ReadPhysicalHqs(Query.Compare) returns (PhysicalHqs) { }
+    rpc ReadSocialHqs(Query.Compare) returns (SocialHqs) { }
+    rpc ReadDigitalHqs(Query.Compare) returns (DigitalHqs) { }
+}

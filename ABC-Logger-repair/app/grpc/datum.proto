@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package kaist.iclab.abclogger;
+
+import "device.proto";
+import "user.proto";
+
+option java_package = "kaist.iclab.abclogger.grpc.proto";
+option java_outer_classname = "DatumProto";
+
+message AppUsageEvent {
+    string package = 1;
+    int64 timestamp = 2;
+    int64 queriedTime = 3;
+    int32 eventType = 4;
+    string className = 5;
+}
+
+message ScreenEvent {
+    int64 timestamp = 1;
+    string eventType = 2;
+}
+
+message Datum  {
+    User user = 1;
+    Device device = 2;
+    int64 uploadedTime = 3;
+    int64 utcOffset = 4;
+
+    oneof data {
+        AppUsageEvent appUsageEvent = 5;
+        ScreenEvent screenEvent = 6;
+    }
+}

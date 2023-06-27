@@ -1,18 +1,44 @@
 package kaist.iclab.abclogger.data.app
 
-import kaist.iclab.abclogger.data.app.usage.AppUsageEvent
+import kaist.iclab.abclogger.data.app.entities.App
+import kaist.iclab.abclogger.data.app.entities.AppBroadcastEvent
+import kaist.iclab.abclogger.data.app.entities.AppUsageEvent
 import kotlinx.coroutines.flow.Flow
 
-class AppRepo(private val appUsageEventDao: AppUsageEventDao, private val appDao: AppDao) {
-    fun getAllAppEvent(): Flow<List<AppUsageEvent>> = appUsageEventDao.getAllAppEvents()
+class AppRepo(private val appDao: AppDao) {
 
-    suspend fun getApp(packageId: String): App? = appDao.getApp(packageId)
+    suspend fun updateApp(app: App){
+        appDao.getApp(app.packageId)?.let{
+            if(app != it){
+                appDao.updateApp(app)
+            }
+        } ?: run {
+            appDao.insertApp(app)
+        }
+    }
 
-    suspend fun updateApp(app: App) = appDao.updateApp(app)
+    suspend fun updateAppEvent(appUsageEvent: AppUsageEvent) {
+        appDao.getAppUsageEventByKey(
+            appUsageEvent.timestamp,
+            appUsageEvent.packageId,
+            appUsageEvent.eventType
+        ) ?: run {
+            appDao.insertAppUsageEvent(appUsageEvent = appUsageEvent)
+        }
+    }
 
-    suspend fun insertApp(app: App) = appDao.insert(app)
+    suspend fun updateAppBroadCastEvent(appBroadcastEvent: AppBroadcastEvent){
+        appDao.getAppBroadcastEventByKey(
+            appBroadcastEvent.timestamp,
+            appBroadcastEvent.packageId,
+            appBroadcastEvent.eventType
+        ) ?: run {
+            appDao.insertAppBroadcastEvent(appBroadcastEvent = appBroadcastEvent)
+        }
+    }
 
-    suspend fun insertAppEvent(appUsageEvent: AppUsageEvent) = appUsageEventDao.insert(appUsageEvent = appUsageEvent)
-
+    fun queryAppBroadcastEvent() = appDao.getAllAppBroadcastEvent()
+    fun queryAppUsageEvent():Flow<List<JoinedAppUsageEvent>> = appDao.getAllAppUsageEvent()
+    fun queryApp() = appDao.getAllApps()
 
 }

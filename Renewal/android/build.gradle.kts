@@ -70,7 +70,10 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3")
 
-    // Support for Androidx Compsoe Navigation
+    // Support for Androidx Compose Navigation
+    val navigationVersion = "2.5.3"
+    implementation("androidx.navigation:navigation-ui-ktx:$navigationVersion")
+    implementation("androidx.navigation:navigation-compose:$navigationVersion")
 
     // Firebase and Google related Library
     // For Crashlytics, Auth, Fitness
@@ -82,10 +85,9 @@ dependencies {
     // Datastore for having configuration as a key-value
     implementation("androidx.datastore:datastore-preferences:1.0.0")
     // RoomDB for storing collected Data
-    implementation("androidx.room:room-common:2.5.1")
-    implementation("androidx.room:room-ktx:2.5.1")
-//    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.21-1.0.11")
-    ksp("androidx.room:room-compiler:2.5.1")
+    implementation("androidx.room:room-common:2.5.2")
+    implementation("androidx.room:room-ktx:2.5.2")
+    ksp("androidx.room:room-compiler:2.5.2")
     // gRPC Communication for optimized network usage
 
 

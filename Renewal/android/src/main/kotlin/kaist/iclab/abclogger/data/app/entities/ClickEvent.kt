@@ -1,13 +1,11 @@
-package kaist.iclab.abclogger.data.app.interaction
+package kaist.iclab.abclogger.data.app.entities
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
-import androidx.room.PrimaryKey
-import kaist.iclab.abclogger.data.app.App
 
 @Entity(
-    tableName ="keyEvents",
+    tableName = "clickEvents",
     foreignKeys = [ForeignKey(
         entity = App::class,
         parentColumns = ["packageId"],
@@ -17,9 +15,9 @@ import kaist.iclab.abclogger.data.app.App
     indices = [
         Index(name = "timestamp")
     ]
-    )
-data class KeyEvent(
+)
+data class ClickEvent(
     val timestamp: Long,
     val packageId: String,
-    val key: String,
+    val eventType: Int
 )

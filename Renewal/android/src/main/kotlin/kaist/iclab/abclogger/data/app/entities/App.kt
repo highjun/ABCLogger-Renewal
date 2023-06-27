@@ -1,7 +1,6 @@
-package kaist.iclab.abclogger.data.app
+package kaist.iclab.abclogger.data.app.entities
 
 import androidx.room.Entity
-
 
 @Entity(
     tableName="apps",
@@ -15,4 +14,5 @@ data class App(
     val installedTimestamp: Long?,
     val lastUpdatedTimestamp: Long?,
     val deletedTimestamp: Long?,
+    val icon: ByteArray
 )

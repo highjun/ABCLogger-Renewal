@@ -1,4 +1,4 @@
-package kaist.iclab.abclogger.ui
+package kaist.iclab.abclogger.ui.screen
 
 import android.content.Intent
 import android.provider.Settings
@@ -12,22 +12,22 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
-import kaist.iclab.abclogger.checkPermission
-import org.koin.androidx.compose.koinViewModel
-
+import kaist.iclab.abclogger.ui.ABCUIState
 
 @Composable
-fun ABCApp(viewModel:ABCViewModel = koinViewModel()){
-    val abcUIState by viewModel.uiState.collectAsState()
-
-    if(!viewModel.checkPermission()){
+fun SettingScreen(
+    abcUIState: ABCUIState,
+    onStartClicked: () -> Unit,
+    onStopClicked: () -> Unit,
+    onNextClick: () -> Unit,
+    checkPermission: () -> Boolean
+){
+    if(!checkPermission()){
         val context = LocalContext.current
         context.startActivity(Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS))
     }
@@ -35,7 +35,15 @@ fun ABCApp(viewModel:ABCViewModel = koinViewModel()){
     Column(
         modifier = Modifier.fillMaxSize()
     ){
-        LoggingController(isLogging = abcUIState.isLogging, onStartClicked = {viewModel.onStartClick()}, onStopClicked =  {viewModel.onStopClick()})
+        LoggingController(
+            isLogging = abcUIState.isLogging,
+            onStartClicked = onStartClicked,
+            onStopClicked =  onStopClicked)
+        Button(
+            onClick = onNextClick
+        ){
+            Text("AppUsageEvents")
+        }
     }
 }
 

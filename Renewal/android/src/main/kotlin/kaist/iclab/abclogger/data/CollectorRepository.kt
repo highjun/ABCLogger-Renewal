@@ -3,6 +3,7 @@ package kaist.iclab.abclogger.data
 import android.app.AppOpsManager
 import android.content.Context
 import android.os.Build
+import android.util.Log
 
 class CollectorRepository(
     val collectors:List<Collector>,
@@ -32,16 +33,17 @@ class CollectorRepository(
     }
 
     fun start(){
-        val permissions = requiredPermissions()
-
+//        val permissions = requiredPermissions()
 
         collectors.onEach {
             it.startLogging()
         }
+        Log.d(javaClass.name, "Start Logging")
     }
     fun stop(){
         collectors.onEach {
             it.stopLogging()
         }
+        Log.d(javaClass.name, "Stop Logging")
     }
 }

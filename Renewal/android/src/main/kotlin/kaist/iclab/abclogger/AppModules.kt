@@ -1,16 +1,12 @@
 package kaist.iclab.abclogger
 
-import android.content.Context
-import androidx.datastore.core.DataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.preferencesDataStore
 import androidx.room.Room
 import kaist.iclab.abclogger.data.ABCDatabase
 import kaist.iclab.abclogger.data.CollectorRepository
-import kaist.iclab.abclogger.data.app.AppDao
 import kaist.iclab.abclogger.data.app.AppRepo
-import kaist.iclab.abclogger.data.app.AppUsageEventDao
-import kaist.iclab.abclogger.data.app.usage.AppUsageEventCollector
+import kaist.iclab.abclogger.data.app.collectors.AppBroadcastEventCollector
+import kaist.iclab.abclogger.data.app.collectors.AppUsageEventCollector
+import kaist.iclab.abclogger.data.check.ContinueCheckCollector
 import kaist.iclab.abclogger.ui.ABCViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -26,20 +22,15 @@ val appModule = module{
         ).build()
     }
 
-    single<AppDao>{
+    single{
         get<ABCDatabase>().appDao()
     }
 
-    single<AppUsageEventDao>{
-        get<ABCDatabase>().appUsageEventDao()
+    single{
+        get<ABCDatabase>().checkDao()
     }
 
-
-
-    single { AppRepo(
-        get(),
-        get(),
-        )
+    single { AppRepo(get())
     }
 
     single{
@@ -47,14 +38,23 @@ val appModule = module{
     }
 
     single {
+        AppBroadcastEventCollector(context = androidContext(), get())
+    }
+
+    single {
+        ContinueCheckCollector(context = androidContext(), get())
+    }
+
+
+    single {
         CollectorRepository(collectors = listOf(
-            get<AppUsageEventCollector>()
+            get<AppUsageEventCollector>(),
+            get<AppBroadcastEventCollector>(),
+            get<ContinueCheckCollector>()
         ), androidContext())
     }
 
     viewModel {
-        ABCViewModel(get(), androidContext())
+        ABCViewModel(get(), get(), androidContext())
     }
-
-
 }

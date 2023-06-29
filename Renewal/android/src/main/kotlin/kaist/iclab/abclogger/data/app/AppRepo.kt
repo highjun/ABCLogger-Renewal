@@ -37,6 +37,10 @@ class AppRepo(private val appDao: AppDao) {
         }
     }
 
+    suspend fun getLastAppUsageEventTimestamp():Long {
+        return appDao.getLastAppUsageEvent()?.timestamp ?: (System.currentTimeMillis() - 60000L)
+    }
+
     fun queryAppBroadcastEvent() = appDao.getAllAppBroadcastEvent()
     fun queryAppUsageEvent():Flow<List<JoinedAppUsageEvent>> = appDao.getAllAppUsageEvent()
     fun queryApp() = appDao.getAllApps()

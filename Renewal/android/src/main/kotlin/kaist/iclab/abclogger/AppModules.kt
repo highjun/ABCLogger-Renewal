@@ -6,14 +6,16 @@ import kaist.iclab.abclogger.data.CollectorRepository
 import kaist.iclab.abclogger.data.app.AppRepo
 import kaist.iclab.abclogger.data.app.collectors.AppBroadcastEventCollector
 import kaist.iclab.abclogger.data.app.collectors.AppUsageEventCollector
-import kaist.iclab.abclogger.data.check.ContinueCheckCollector
+import kaist.iclab.abclogger.data.devicestatus.screen.ScreenEventCollector
 import kaist.iclab.abclogger.ui.ABCViewModel
+import kaist.iclab.abclogger.ui.screens.appusageevent.AppUsageEventViewModel
+import kaist.iclab.abclogger.ui.screens.setting.SettingViewModel
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 
-val appModule = module{
+val appModule = module {
     single {
         Room.databaseBuilder(
             androidContext(),
@@ -22,18 +24,19 @@ val appModule = module{
         ).build()
     }
 
-    single{
+    single {
         get<ABCDatabase>().appDao()
     }
 
-    single{
-        get<ABCDatabase>().checkDao()
+    single {
+        get<ABCDatabase>().loggingStatusEventDao()
     }
 
-    single { AppRepo(get())
+    single {
+        AppRepo(get())
     }
 
-    single{
+    single {
         AppUsageEventCollector(context = androidContext(), get())
     }
 
@@ -42,19 +45,30 @@ val appModule = module{
     }
 
     single {
-        ContinueCheckCollector(context = androidContext(), get())
+        ScreenEventCollector(context = androidContext(), get())
     }
+
 
 
     single {
-        CollectorRepository(collectors = listOf(
-            get<AppUsageEventCollector>(),
-            get<AppBroadcastEventCollector>(),
-            get<ContinueCheckCollector>()
-        ), androidContext())
+        CollectorRepository(
+            collectors = listOf(
+                get<AppUsageEventCollector>(),
+                get<AppBroadcastEventCollector>(),
+                get<ScreenEventCollector>()
+            ), androidContext()
+        )
     }
 
     viewModel {
-        ABCViewModel(get(), get(), androidContext())
+        ABCViewModel()
+    }
+
+    viewModel {
+        SettingViewModel(get())
+    }
+
+    viewModel {
+        AppUsageEventViewModel(get())
     }
 }

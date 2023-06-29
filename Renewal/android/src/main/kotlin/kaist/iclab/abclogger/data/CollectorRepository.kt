@@ -1,49 +1,50 @@
 package kaist.iclab.abclogger.data
 
-import android.app.AppOpsManager
+import android.app.ActivityManager
 import android.content.Context
-import android.os.Build
+import android.content.Intent
 import android.util.Log
+import androidx.core.content.ContextCompat
+import kaist.iclab.abclogger.isPermissionEnabled
+
 
 class CollectorRepository(
-    val collectors:List<Collector>,
+    val collectors: List<Collector>,
     val context: Context
 ) {
-    fun requiredPermissions(): Set<String> {
-        return collectors.map{
+    fun requiredPermissons():List<String> {
+        return collectors.map {
             it.requiredPreferences
-        }.flatten().toSet()
+        }.flatten().toSet().filter{
+            !isPermissionEnabled(context, it)
+        }
     }
 
-    fun checkPermission():Boolean{
-        val appOpsManager = context.getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-            appOpsManager.unsafeCheckOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), context.packageName
-            )
-        } else {
-            appOpsManager.checkOpNoThrow(
-                AppOpsManager.OPSTR_GET_USAGE_STATS,
-                android.os.Process.myUid(), context.packageName
-            )
-        }
-
-        return mode == AppOpsManager.MODE_ALLOWED
-    }
-
-    fun start(){
-//        val permissions = requiredPermissions()
-
-        collectors.onEach {
-            it.startLogging()
-        }
+    fun start() {
+        val intent = Intent(context, ABCForegroundService::class.java)
+        ContextCompat.startForegroundService(context, intent)
         Log.d(javaClass.name, "Start Logging")
     }
-    fun stop(){
+
+    fun stop() {
+        val intent = Intent(context, ABCForegroundService::class.java)
+        context.stopService(intent)
         collectors.onEach {
             it.stopLogging()
         }
         Log.d(javaClass.name, "Stop Logging")
+    }
+
+    // getRunningServices is deprecated, but there is no other way to know of running services.
+    fun isLogging(): Boolean {
+        val activityManager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager?
+        activityManager?.let {
+            for (service in it.getRunningServices(Integer.MAX_VALUE)) {
+                if (ABCForegroundService::class.java.name == service.service.className) {
+                    return true
+                }
+            }
+        }
+        return false
     }
 }

@@ -1,0 +1,15 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "kaist.iclab.abclogger";
+option java_outer_classname = "DeviceProto";
+
+package protos;
+
+message Device {
+  string deviceId = 1;
+  string androidOs =  2;
+  string deviceModel = 3;
+  string appVersion = 4;
+}

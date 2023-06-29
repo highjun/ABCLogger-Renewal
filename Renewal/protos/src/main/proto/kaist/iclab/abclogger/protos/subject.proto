@@ -1,0 +1,14 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "kaist.iclab.abclogger";
+option java_outer_classname = "SubjectProto";
+
+package protos;
+
+
+message Subject {
+  string email = 1;
+  string groupName = 2;
+}

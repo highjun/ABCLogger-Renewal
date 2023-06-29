@@ -6,6 +6,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.drawable.AdaptiveIconDrawable
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -135,8 +136,13 @@ fun Drawable.toByteArray():ByteArray{
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
 
             return outputStream.toByteArray()
-        }else{
+        }else if(this is BitmapDrawable){
             val bitmap = (this as BitmapDrawable).bitmap
+            val outputStream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
+            return outputStream.toByteArray()
+        }else{
+            val bitmap = generateBlackBitmap(20, 20)
             val outputStream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
             return outputStream.toByteArray()
@@ -147,15 +153,23 @@ fun Drawable.toByteArray():ByteArray{
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream)
         return stream.toByteArray()
     }else{
-        Log.e(javaClass.name, this.javaClass.name)
-        val bitmap = (this as BitmapDrawable).bitmap
+        val bitmap = generateBlackBitmap(20, 20)
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream)
         return outputStream.toByteArray()
     }
+
+//    com.samsung.android.graphics.spr.SemPathRenderingDrawable
 }
 
 fun ByteArray.toDrawable(): Drawable {
     val bitmap = BitmapFactory.decodeByteArray(this, 0, this.size)
     return BitmapDrawable(null, bitmap)
+}
+
+fun generateBlackBitmap(width: Int, height: Int): Bitmap {
+    val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+    val canvas = Canvas(bitmap)
+    canvas.drawColor(Color.BLACK)
+    return bitmap
 }

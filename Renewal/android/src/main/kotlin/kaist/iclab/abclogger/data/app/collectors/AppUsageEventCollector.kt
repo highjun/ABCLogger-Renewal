@@ -12,17 +12,13 @@ import android.content.IntentFilter
 import android.os.Build
 import android.util.Log
 import androidx.core.content.getSystemService
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.longPreferencesKey
 import kaist.iclab.abclogger.data.Collector
 import kaist.iclab.abclogger.data.app.AppRepo
 import kaist.iclab.abclogger.data.app.getApplication
 import kaist.iclab.abclogger.data.app.toAppUsageEvent
-import kaist.iclab.abclogger.dataStore
 import kaist.iclab.abclogger.goAsync
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
@@ -43,14 +39,13 @@ class AppUsageEventCollector(
     }
 
     private val actionCode = "ACTION_RETRIEVE_APP_USAGE"
-    private val lastQueriedTimestampKey = longPreferencesKey("APP_USAGE_LAST_QUERIED_TIMESTAMP")
     private val requestCode = 0xee
 
     private var prevTimestamp = 0L
 
     init {
         CoroutineScope(Dispatchers.IO).launch {
-            prevTimestamp = context.dataStore.data.first()[lastQueriedTimestampKey] ?: System.currentTimeMillis()
+            prevTimestamp = appRepo.getLastAppUsageEventTimestamp()
         }
     }
 
@@ -80,14 +75,9 @@ class AppUsageEventCollector(
         val event: UsageEvents.Event = UsageEvents.Event()
         try {
             while (usageStatsList.getNextEvent(event)) {
-                Log.d(javaClass.name, event.toAppUsageEvent(currTimestamp).toString())
                 val packageId = event.packageName
                 appRepo.updateApp(getApplication(context.packageManager, packageId))
-                Log.d(javaClass.name, "App INSERTED")
                 appRepo.updateAppEvent(event.toAppUsageEvent(currTimestamp))
-            }
-            context.dataStore.edit { preferences ->
-                preferences[lastQueriedTimestampKey] = currTimestamp
             }
             prevTimestamp = currTimestamp
         } catch (throwable: Throwable) {

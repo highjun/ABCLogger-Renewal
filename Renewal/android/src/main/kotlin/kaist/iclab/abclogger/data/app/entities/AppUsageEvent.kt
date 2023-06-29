@@ -14,11 +14,10 @@ import androidx.room.Index
             childColumns = ["packageId"]
         )
     ],
-    primaryKeys = ["timestamp", "packageId", "eventType"],
+    primaryKeys = ["timestamp", "packageId", "eventType", "className"],
     indices = [Index(value = ["timestamp"])]
 )
 data class AppUsageEvent(
-    val queriedTimestamp: Long,
     val timestamp: Long,
     val packageId: String,
     val eventType: Int,

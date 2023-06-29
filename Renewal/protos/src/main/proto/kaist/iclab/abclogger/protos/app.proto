@@ -1,0 +1,32 @@
+
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "kaist.iclab.abclogger";
+option java_outer_classname = "AppProto";
+
+package protos;
+
+message AppInfo {
+  string packageId = 1;
+  string name = 2;
+  bool isSystemApp = 3;
+  int32 category = 4;
+  int64 installedTimestamp = 5;
+  int64 lastUpdatedTimestamp = 6;
+  int64 deletedTimestamp = 7;
+  bytes icon = 8;
+}
+
+message AppUsageEvent {
+  int64 timestamp = 1;
+  string packageId = 2;
+  int32 eventType = 3;
+  string className = 4;
+}
+
+message AppBroadcastEvent {
+  int64 timestamp = 1;
+  string packageId = 2;
+  int32 eventType = 3;
+}

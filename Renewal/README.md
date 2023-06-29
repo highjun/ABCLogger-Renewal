@@ -7,3 +7,8 @@ ui: UI Logic과 관련된 기능 (ViewModel, Screen)
 
 언제 Collect Query가 진행되었는지 확인
 Adaptive는?
+
+
+ABC ViewModel: Global State의 저장.
+* 현재 Screen
+* 현재 Auth 상태 등.

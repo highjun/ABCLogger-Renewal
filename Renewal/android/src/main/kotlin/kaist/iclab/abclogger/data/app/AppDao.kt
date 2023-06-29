@@ -27,13 +27,16 @@ interface AppDao {
     @Query("SELECT * FROM appUsageEvents WHERE timestamp = :timestamp and packageId = :packageId and eventType = :eventType")
     suspend fun getAppUsageEventByKey(timestamp: Long, packageId: String, eventType: Int): AppUsageEvent?
 
+    @Query("SELECT * FROM appUsageEvents ORDER BY timestamp DESC LIMIT 1")
+    suspend fun getLastAppUsageEvent(): AppUsageEvent?
+
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insertAppBroadcastEvent(appBroadcastEvent: AppBroadcastEvent)
 
     @Query("SELECT * FROM appBroadcastEvents WHERE timestamp = :timestamp and packageId = :packageId and eventType = :eventType")
     suspend fun getAppBroadcastEventByKey(timestamp: Long, packageId: String, eventType: Int): AppBroadcastEvent?
 
-    @Query("SELECT * FROM appUsageEvents INNER JOIN apps ON appUsageEvents.packageId = apps.packageId")
+    @Query("SELECT * FROM appUsageEvents INNER JOIN apps ON appUsageEvents.packageId = apps.packageId ORDER BY timestamp DESC LIMIT 10")
     fun getAllAppUsageEvent(): Flow<List<JoinedAppUsageEvent>>
 
     @Query("SELECT * FROM apps")

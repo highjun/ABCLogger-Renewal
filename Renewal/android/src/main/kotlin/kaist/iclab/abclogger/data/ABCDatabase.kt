@@ -6,8 +6,8 @@ import kaist.iclab.abclogger.data.app.AppDao
 import kaist.iclab.abclogger.data.app.entities.App
 import kaist.iclab.abclogger.data.app.entities.AppBroadcastEvent
 import kaist.iclab.abclogger.data.app.entities.AppUsageEvent
-import kaist.iclab.abclogger.data.check.CheckDao
-import kaist.iclab.abclogger.data.check.CheckEntity
+import kaist.iclab.abclogger.data.devicestatus.logging.LoggingStatusEvent
+import kaist.iclab.abclogger.data.devicestatus.logging.LoggingStatusEventDao
 
 
 @Database(
@@ -16,10 +16,10 @@ import kaist.iclab.abclogger.data.check.CheckEntity
         AppUsageEvent::class,
         App::class,
         AppBroadcastEvent::class,
-        CheckEntity::class,
+        LoggingStatusEvent::class,
     ], exportSchema = false
 )
 abstract class ABCDatabase : RoomDatabase() {
     abstract fun appDao(): AppDao
-    abstract fun checkDao(): CheckDao
+    abstract fun loggingStatusEventDao(): LoggingStatusEventDao
 }
